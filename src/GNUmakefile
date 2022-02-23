@@ -141,7 +141,13 @@ ifneq (,$(findstring linux,$(TARGETPLATFORM)))
 endif
 
 ifneq (,$(findstring gnu,$(TARGETPLATFORM)))
-ifeq (,$(findstring linux,$(TARGETPLATFORM)))
+# For clang environments provided by MSYS2,
+# as it uses target string like $(ARCH)-w64-windows-gnu.
+ifneq (,$(findstring w64-windows,$(TARGETPLATFORM)))
+  MINGW := 1
+  WIN := 1
+  PE := 1
+else ifeq (,$(findstring linux,$(TARGETPLATFORM)))
   UNIX := 1
   HURD := 1
   ELF := 1
